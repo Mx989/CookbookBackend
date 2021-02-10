@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace CookbookAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Cookbook")]
     public class RecipesController : ControllerBase
     {
         private readonly ILogger<RecipesController> logger;
@@ -23,6 +23,7 @@ namespace CookbookAPI.Controllers
         }
 
         [HttpGet]
+        [Route("Recipes")]
         public IEnumerable<Recipe> GetRecipes()
         {
             return recipesRepository.GetRecipes();
@@ -40,14 +41,12 @@ namespace CookbookAPI.Controllers
         }
 
         [Route("RemoveRecipe")]
-
         public async Task RemoveRecipe(int id)
         {
             await recipesRepository.RemoveRecipe(id);
         }
                 
         [Route("RemoveIngredient")]
-
         public async Task RemoveIngredient(int recipeId, int ingredientId)
         {
             await recipesRepository.RemoveIngredient(recipeId, ingredientId);
