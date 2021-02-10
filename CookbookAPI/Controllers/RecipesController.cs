@@ -33,15 +33,37 @@ namespace CookbookAPI.Controllers
             return recipesRepository.GetRecipe(id);
         }
 
+        [Route("Ingredients")]
+        public IEnumerable<Ingredient> GetIngredientsForRecipe(int recipeId)
+        {
+            return recipesRepository.GetIngredientsForRecipe(recipeId);
+        }
+
+        [Route("RemoveRecipe")]
+
+        public async Task RemoveRecipe(int id)
+        {
+            await recipesRepository.RemoveRecipe(id);
+        }
+                
+        [Route("RemoveIngredient")]
+
+        public async Task RemoveIngredient(int recipeId, int ingredientId)
+        {
+            await recipesRepository.RemoveIngredient(recipeId, ingredientId);
+        }
+
         [HttpPost]
+        [Route("AddRecipe")]
         public async Task AddRecipe(string name, string description, string imagePath)
         {
             await recipesRepository.AddRecipe(name, description, imagePath);
         }
 
+        [Route("AddIngredient")]
         public async Task AddIngredientToRecipe(int recipeId, string name, int amount, string unit)
         {
-            recipesRepository.AddIngredientForRecipe(recipeId, name, amount, unit);
+            await recipesRepository.AddIngredientForRecipe(recipeId, name, amount, unit);
         }
     }
 }

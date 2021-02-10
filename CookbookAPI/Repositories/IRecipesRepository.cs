@@ -12,5 +12,8 @@ namespace CookbookAPI.Repositories
         public Recipe GetRecipe(int recipeId);
         public Task AddRecipe(string name, string description, string imagePath);
         public Task AddIngredientForRecipe(int recipeId, string name, int amount, string unit);
+        public IEnumerable<Ingredient> GetIngredientsForRecipe(int recipeId);
+        public Task RemoveRecipe(int id);
+        public Task RemoveIngredient(int recipeId, int ingredientId);
     }
 }
