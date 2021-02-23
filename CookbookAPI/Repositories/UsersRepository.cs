@@ -23,6 +23,16 @@ namespace CookbookAPI.Repositories
             return await cookbookDbContext.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
         }
 
+        public async Task<string> GetUserRole(string username)
+        {
+            var user = await cookbookDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user != null)
+            {
+                return user.Role;
+            }
+            else return "";
+        }
+
         public async Task<User> GetUser(string username)
         {
             var user = await cookbookDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
@@ -38,6 +48,17 @@ namespace CookbookAPI.Repositories
         public async Task AddUser(string username, string password, string email)
         {
             await cookbookDbContext.Users.AddAsync(new User() { Username = username, Password = password, EmailAddress = email });
+            await cookbookDbContext.SaveChangesAsync();
+        }
+
+        public async Task ChangeUserPermissions(string username, string newRole)
+        {
+            var user = await cookbookDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user != null)
+            {
+                user.Role = newRole;
+            }
+            cookbookDbContext.Users.Update(user);
             await cookbookDbContext.SaveChangesAsync();
         }
     }

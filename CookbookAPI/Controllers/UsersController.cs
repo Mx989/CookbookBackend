@@ -18,7 +18,7 @@ namespace CookbookAPI.Controllers
 
     [ApiController]
     [Route("Users")]
-    public class UsersController: ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> logger;
         private IUsersRepository usersRepository;
@@ -47,7 +47,8 @@ namespace CookbookAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, credentials.Username)
+                    new Claim(ClaimTypes.Name, credentials.Username),
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -61,10 +62,24 @@ namespace CookbookAPI.Controllers
 
         [HttpPost]
         [Route("AddUser")]
-        public async Task AddUser(string username, string password, string emailAddress)
+        public async Task<ActionResult> AddUser([FromBody] User user)
         {
-            await usersRepository.AddUser(username, password, emailAddress);
+            if (user.Username == null || user.Username == "" || user.Password == null || user.Password == "" || user.EmailAddress == null || user.EmailAddress == "") return BadRequest();
+            
+            await usersRepository.AddUser(user.Username, user.Password, user.EmailAddress);
+            return Ok();
         }
 
+        [Route("ChangePermissions")]
+        public async Task<ActionResult> ChangeUserPermissions(string issuerUsername, string username, string newPermission)
+        {
+            var currentUserRole = await usersRepository.GetUserRole(issuerUsername);
+
+            if (currentUserRole == "Administrator") {
+                await usersRepository.ChangeUserPermissions(username, newPermission);
+                return Ok();
+            }
+            else return Unauthorized();
+        }
     }
 }
