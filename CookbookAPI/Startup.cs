@@ -1,5 +1,7 @@
 using CookbookAPI.Data;
+using CookbookAPI.Handlers;
 using CookbookAPI.Repositories;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +35,10 @@ namespace CookbookAPI
             services.AddEntityFrameworkNpgsql().AddDbContext<CookbookDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnectionString")));
 
             services.AddTransient<IRecipesRepository, RecipesRepository>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
+
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +53,7 @@ namespace CookbookAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

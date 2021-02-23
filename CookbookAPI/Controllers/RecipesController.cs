@@ -1,5 +1,6 @@
 ﻿using CookbookAPI.Models;
 using CookbookAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace CookbookAPI.Controllers
 {
+    [Authorize]
     [ApiController]
-    [Route("Cookbook")]
+    [Route("Recipes")]
     public class RecipesController : ControllerBase
     {
         private readonly ILogger<RecipesController> logger;
@@ -23,7 +25,7 @@ namespace CookbookAPI.Controllers
         }
 
         [HttpGet]
-        [Route("Recipes")]
+        [Route("GetRecipes")]
         public IEnumerable<Recipe> GetRecipes()
         {
             return recipesRepository.GetRecipes();
@@ -34,7 +36,7 @@ namespace CookbookAPI.Controllers
             return recipesRepository.GetRecipe(id);
         }
 
-        [Route("Ingredients")]
+        [Route("GetIngredients")]
         public IEnumerable<Ingredient> GetIngredientsForRecipe(int recipeId)
         {
             return recipesRepository.GetIngredientsForRecipe(recipeId);
