@@ -20,5 +20,7 @@ namespace CookbookAPI.Models
         
         [Required]
         public string EmailAddress { get; set; }
+
+        public string JWTKey { get; set; }
     }
 }
