@@ -47,7 +47,7 @@ namespace CookbookAPI.Controllers
         {
             await recipesRepository.RemoveRecipe(id);
         }
-                
+
         [Route("RemoveIngredient")]
         public async Task RemoveIngredient(int recipeId, int ingredientId)
         {
@@ -56,15 +56,15 @@ namespace CookbookAPI.Controllers
 
         [HttpPost]
         [Route("AddRecipe")]
-        public async Task AddRecipe(string name, string description, string imagePath)
+        public async Task AddRecipe([FromBody] Recipe recipe)
         {
-            await recipesRepository.AddRecipe(name, description, imagePath);
+            await recipesRepository.AddRecipe(recipe.Name, recipe.Description, recipe.ImagePath);
         }
 
         [Route("AddIngredient")]
-        public async Task AddIngredientToRecipe(int recipeId, string name, int amount, string unit)
+        public async Task AddIngredientToRecipe([FromBody] Ingredient ingredient)
         {
-            await recipesRepository.AddIngredientForRecipe(recipeId, name, amount, unit);
+            await recipesRepository.AddIngredientForRecipe(ingredient.RecipeId, ingredient.Name, ingredient.Amount, ingredient.Unit);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace CookbookAPI.Controllers
             jwtSettings = _jwtSettings.Value;
         }
 
-        [HttpGet("Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<User>> Login([FromBody] Credentials credentials)
         {
             var user = await usersRepository.GetUser(credentials.Username, credentials.Password);
@@ -48,7 +48,7 @@ namespace CookbookAPI.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, credentials.Username),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    //new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -74,6 +74,8 @@ namespace CookbookAPI.Controllers
         public async Task<ActionResult> ChangeUserPermissions(string issuerUsername, string username, string newPermission)
         {
             var currentUserRole = await usersRepository.GetUserRole(issuerUsername);
+            //TODO Try to get the role from identity
+            
 
             if (currentUserRole == "Administrator") {
                 await usersRepository.ChangeUserPermissions(username, newPermission);
