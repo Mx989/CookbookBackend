@@ -25,3 +25,9 @@ To use the project, please:
 }
   
 3. Build and start the project.
+
+## Project scope
+
+1. Adding/Removing recipes and ingredients.
+2. Adding/Removing users.
+3. User authentication with JWT.
