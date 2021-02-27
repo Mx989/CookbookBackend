@@ -7,6 +7,7 @@ To use the project, please:
 1. Prepare postgresql database.
 2. Add appsettings.json file to CookbookAPI project, with following data:
 
+```json
 {
   "ConnectionStrings": {
     "DefaultConnectionString": "Host=<<host>>; Database=<<db>>; Username=<<user>>;  Password=<<pass>>"
@@ -23,7 +24,8 @@ To use the project, please:
   },
   "AllowedHosts": "*"
 }
-  
+```
+
 3. Build and start the project.
 
 ## Project scope
